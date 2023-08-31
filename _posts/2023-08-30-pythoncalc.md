@@ -5,7 +5,7 @@ layout: post
 title: My Calculator
 description: Basic calculator I made using HTML CSS and Javascript.
 type: tangibles
-courses: { compsci: {week: 2} }
+courses: { csp: {week: 2} }
 ---
 
 ## Python Calculator
