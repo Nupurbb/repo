@@ -5,7 +5,7 @@ layout: post
 title: Snake Game
 description: Snake Game
 type: tangibles
-courses: { compsci: {week: 2} }
+courses: { compsci: {week: 1} }
 ---
 
 
