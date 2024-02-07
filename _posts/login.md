@@ -7,102 +7,72 @@ description: review ticket
 courses: {'compsci': {'week': 0}}
 type: tangibles
 ---
+<form action="javascript:login_user()">
+    <p><label>
+        User ID:
+        <input type="text" name="uid" id="uid" required="" />
+    </label></p>
+    <p><label>
+        Password:
+        <input type="password" name="password" id="password" required="" />
+    </label></p>
+    <p>
+        <button>Login</button>
+    </p>
+</form>
 
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Page</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-    }
-    .container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        background: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .form-group {
-        margin-bottom: 20px;
-    }
-    .form-group label {
-        display: block;
-        font-weight: bold;
-    }
-    .form-group input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .btn {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .btn:hover {
-        background-color: #0056b3;
-    }
-</style>
-</head>
-<body>
-<div class="container">
-    <h2>Login</h2>
-    <div class="form-group">
-        <label for="backendLink">Backend Link:</label>
-        <input type="text" id="backendLink" placeholder="Enter backend link...">
-    </div>
-    <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="Enter your username...">
-    </div>
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" placeholder="Enter your password...">
-    </div>
-    <button class="btn" onclick="login()">Login</button>
-</div>
+<!--
+Below JavaScript code is designed to handle user authentication in a web application. It's written to work with a backend server that uses JWT (JSON Web Tokens) for authentication.
 
-<script>
-    function login() {
-        var backendLink = document.getElementById("backendLink").value;
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
+The script defines a function when the page loads. This function is triggered when the Login button in the HTML form above is pressed.
+ -->
+<script type="module">
+    // uri variable and options object are obtained from config.js
 
-        // Send login request to backend
-        // Example:
-        fetch http://127.0.0.1:5000 {
-            method: 'POST',
+
+    function login_user(){
+        // Set Authenticate endpoint
+        const url ='http://localhost:5000/authenticate';
+
+        // Set the body of the request to include login data from the DOM
+        const body = {
+            uid: document.getElementById("uid").value,
+            password: document.getElementById("password").value,
+        };
+
+        // Change options according to Authentication requirements
+        const authOptions = {
+            mode: 'cors', // no-cors, *cors, same-origin
+            credentials: 'include', // include, same-origin, omit
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        }
+            method: 'POST', // Override the method property
+            cache: 'no-cache', // Set the cache property
+            body: JSON.stringify(body)
+        };
+
+        // Fetch JWT
+        fetch(url, authOptions)
         .then(response => {
-            if (response.ok) {
-                alert('Login successful!');
-                // Redirect or do something else after successful login
-            } else {
-                alert('Login failed!');
+            // handle error response from Web API
+            if (!response.ok) {
+                const errorMsg = 'Login error: ' + response.status;
+                console.log(errorMsg);
+                return;
             }
+            // Success!!!
+            // Redirect to the database page
+            window.location.href = "http://127.0.0.1:4200/student/2024/01/30/DataTable.html"
+            ;
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred, please try again later.');
+        // catch fetch errors (ie ACCESS to server blocked)
+        .catch(err => {
+
+            console.error(err);
         });
     }
+
+    // Attach login_user to the window object, allowing access to form action
+    window.login_user = login_user;
 </script>
-</body>
-</html>

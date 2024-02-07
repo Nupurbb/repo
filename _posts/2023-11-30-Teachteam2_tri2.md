@@ -1,0 +1,66 @@
+# User Login Form
+
+<form action="javascript:login_user()">
+    <p><label>
+        User ID:
+        <input type="text" name="uid" id="uid" required="" />
+    </label></p>
+    <p><label>
+        Password:
+        <input type="password" name="password" id="password" required="" />
+    </label></p>
+    <p>
+        <button>Login</button>
+    </p>
+</form>
+
+### JavaScript Code
+
+```javascript
+// JavaScript code for login functionality
+// This code should be placed in a separate script file or in a script tag in your HTML document
+function login_user(){
+    // Set Authenticate endpoint
+    const url ='http://127.0.0.1:8086/api/users/authenticate';
+
+    // Set the body of the request to include login data from the DOM
+    const body = {
+        uid: document.getElementById("uid").value,
+        password: document.getElementById("password").value,
+    };
+
+    // Change options according to Authentication requirements
+    const authOptions = {
+        mode: 'cors', // no-cors, *cors, same-origin
+        credentials: 'include', // include, same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'POST', // Override the method property
+        cache: 'no-cache', // Set the cache property
+        body: JSON.stringify(body)
+    };
+
+    // Fetch JWT
+    fetch(url, authOptions)
+    .then(response => {
+        // handle error response from Web API
+        if (!response.ok) {
+            const errorMsg = 'Login error: ' + response.status;
+            console.log(errorMsg);
+            return;
+        }
+        // Success!!!
+        // Redirect to the database page
+        window.location.href = "http://127.0.0.1:4200/student/2024/01/30/DataTable.html";
+    })
+    // catch fetch errors (ie ACCESS to server blocked)
+    .catch(err => {
+        console.error(err);
+    });
+}
+
+
+Replace `"http://127.0.0.1:8086/api/users/authenticate"` with your actual authentication endpoint and `"http://127.0.0.1:4200/student/2024/01/30/DataTable.html"` with the URL of your data table page.
+
+This Markdown document combines both the login form and the data table content. Adjust the content of the data table section according to your needs.
